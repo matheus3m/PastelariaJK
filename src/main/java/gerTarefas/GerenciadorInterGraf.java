@@ -14,10 +14,6 @@ import java.lang.reflect.InvocationTargetException;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author mathe
- */
 public class GerenciadorInterGraf {
 
     private FrmPrincipal princ;
