@@ -19,9 +19,7 @@ public class Bebida implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idBebida;
-    @Column
     private float valor;
-    @Column
     private String nome;
 
     public Bebida(int idBebida, float valor, String nome) {

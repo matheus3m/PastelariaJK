@@ -48,17 +48,17 @@ public class Cliente implements Serializable {
     private String bairro;
     private String rua;
     
-    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
-    private List<Pedido> pedidos;
-    
     @Column(length = 3)
     private int numero;
-    
+
     private String complemento;
     private String referencia;
     private String Cidade;
+    
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
+    private List<Pedido> pedidos;
 
-    public Cliente(int idCliente, String nome, String cpf, Date dtNasc, char sexo, String telFixo, String celular, String email, String bairro, String rua, int numero, String complemento, String referencia, String Cidade) {
+    public Cliente(int idCliente, String nome, String cpf, Date dtNasc, char sexo, String telFixo, String celular, String email, String bairro, String rua, int numero, String complemento, String referencia, String Cidade, List<Pedido> pedidos) {
         this.idCliente = idCliente;
         this.nome = nome;
         this.cpf = cpf;
@@ -73,7 +73,8 @@ public class Cliente implements Serializable {
         this.complemento = complemento;
         this.referencia = referencia;
         this.Cidade = Cidade;
-    }
+        this.pedidos = pedidos;
+    } 
 
     public int getIdCliente() {
         return idCliente;
@@ -186,7 +187,15 @@ public class Cliente implements Serializable {
     public void setCidade(String Cidade) {
         this.Cidade = Cidade;
     }
-  
+
+    public List<Pedido> getPedidos() {
+        return pedidos;
+    }
+
+    public void setPedidos(List<Pedido> pedidos) {
+        this.pedidos = pedidos;
+    }
+
     @Override
     public String toString() {
         return nome;
