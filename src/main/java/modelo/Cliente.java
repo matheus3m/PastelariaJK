@@ -51,7 +51,6 @@ public class Cliente implements Serializable {
     
     @Column(length = 3)
     private int numero;
-    
     private String complemento;
     private String referencia;
     private String Cidade;
