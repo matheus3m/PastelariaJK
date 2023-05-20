@@ -56,8 +56,6 @@ public class Cliente implements Serializable {
     private String referencia;
     private String Cidade;
     
-    private int blablabla;
-    
     @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
     private List<Pedido> pedidos = new ArrayList();
 
@@ -72,7 +70,7 @@ public class Cliente implements Serializable {
         this.pedidos = pedidos;
     }
 
-    public Cliente(String nome, String cpf, Date dtNasc, char sexo, String telFixo, String celular, String email, String bairro, String rua, int numero, String complemento, String referencia, String Cidade, int blablabla) {
+    public Cliente(String nome, String cpf, Date dtNasc, char sexo, String telFixo, String celular, String email, String bairro, String rua, int numero, String complemento, String referencia, String Cidade) {
         this.nome = nome;
         this.cpf = cpf;
         this.dtNasc = dtNasc;
@@ -86,10 +84,9 @@ public class Cliente implements Serializable {
         this.complemento = complemento;
         this.referencia = referencia;
         this.Cidade = Cidade;
-        this.blablabla = blablabla;
     }
 
-    public Cliente(int idCliente, String nome, String cpf, Date dtNasc, char sexo, String telFixo, String celular, String email, String bairro, String rua, int numero, String complemento, String referencia, String Cidade, int blablabla) {
+    public Cliente(int idCliente, String nome, String cpf, Date dtNasc, char sexo, String telFixo, String celular, String email, String bairro, String rua, int numero, String complemento, String referencia, String Cidade) {
         this.idCliente = idCliente;
         this.nome = nome;
         this.cpf = cpf;
@@ -104,7 +101,6 @@ public class Cliente implements Serializable {
         this.complemento = complemento;
         this.referencia = referencia;
         this.Cidade = Cidade;
-        this.blablabla = blablabla;
     }
 
     public int getIdCliente() {
