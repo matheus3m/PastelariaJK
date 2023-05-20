@@ -5,6 +5,7 @@
 package modelo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.GeneratedValue;
@@ -48,17 +49,47 @@ public class Cliente implements Serializable {
     private String bairro;
     private String rua;
     
-    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
-    private List<Pedido> pedidos;
-    
     @Column(length = 3)
     private int numero;
     
     private String complemento;
     private String referencia;
     private String Cidade;
+    
+    private int blablabla;
+    
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
+    private List<Pedido> pedidos = new ArrayList();
 
-    public Cliente(int idCliente, String nome, String cpf, Date dtNasc, char sexo, String telFixo, String celular, String email, String bairro, String rua, int numero, String complemento, String referencia, String Cidade) {
+    public Cliente() {
+    }
+
+    public List<Pedido> getPedidos() {
+        return pedidos;
+    }
+
+    public void setPedidos(List<Pedido> pedidos) {
+        this.pedidos = pedidos;
+    }
+
+    public Cliente(String nome, String cpf, Date dtNasc, char sexo, String telFixo, String celular, String email, String bairro, String rua, int numero, String complemento, String referencia, String Cidade, int blablabla) {
+        this.nome = nome;
+        this.cpf = cpf;
+        this.dtNasc = dtNasc;
+        this.sexo = sexo;
+        this.telFixo = telFixo;
+        this.celular = celular;
+        this.email = email;
+        this.bairro = bairro;
+        this.rua = rua;
+        this.numero = numero;
+        this.complemento = complemento;
+        this.referencia = referencia;
+        this.Cidade = Cidade;
+        this.blablabla = blablabla;
+    }
+
+    public Cliente(int idCliente, String nome, String cpf, Date dtNasc, char sexo, String telFixo, String celular, String email, String bairro, String rua, int numero, String complemento, String referencia, String Cidade, int blablabla) {
         this.idCliente = idCliente;
         this.nome = nome;
         this.cpf = cpf;
@@ -73,6 +104,7 @@ public class Cliente implements Serializable {
         this.complemento = complemento;
         this.referencia = referencia;
         this.Cidade = Cidade;
+        this.blablabla = blablabla;
     }
 
     public int getIdCliente() {
@@ -186,7 +218,7 @@ public class Cliente implements Serializable {
     public void setCidade(String Cidade) {
         this.Cidade = Cidade;
     }
-  
+    
     @Override
     public String toString() {
         return nome;
