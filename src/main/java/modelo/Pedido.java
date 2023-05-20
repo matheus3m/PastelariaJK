@@ -1,4 +1,4 @@
-package modelo;
+ package modelo;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -31,6 +31,15 @@ public class Pedido implements Serializable{
     @JoinColumn(name = "idCliente")
     private Cliente cliente;
 
+    public Pedido() {
+    }
+
+    public Pedido(Date dataPedido, float total, Cliente cliente) {
+        this.dataPedido = dataPedido;
+        this.total = total;
+        this.cliente = cliente;
+    }
+    
     public Pedido(int idPedido, Date dataPedido, float total, Cliente cliente) {
         this.idPedido = idPedido;
         this.dataPedido = dataPedido;

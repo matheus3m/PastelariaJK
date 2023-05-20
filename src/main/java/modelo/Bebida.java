@@ -54,12 +54,4 @@ public class Bebida implements Serializable{
     public void setNome(String nome) {
         this.nome = nome;
     }
-    
-    
-    
-    
-    
-    
-    
-    
 }
