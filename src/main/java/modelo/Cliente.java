@@ -211,8 +211,8 @@ public class Cliente implements Serializable {
         return FuncoesUteis.dateToStr(dtNasc);
     }
     
-    public Object[] toArray() throws ParseException {
-        return new Object[]{this, celular};
+    public Object[] toArray() throws ParseException {        
+            return new Object[] {this, celular};
     }
     
     @Override

@@ -5,19 +5,25 @@
 package intergraf;
 
 import gerTarefas.GerenciadorInterGraf;
+import java.text.ParseException;
+import javax.swing.JOptionPane;
+import modelo.Cliente;
 
 /**
  *
  * @author mathe
  */
 public class DlgCadPedido extends javax.swing.JDialog {
-
+    
+    private Cliente cliSelecionado;
     private GerenciadorInterGraf gerIG;
     
     public DlgCadPedido(java.awt.Frame parent, boolean modal, GerenciadorInterGraf gerIG) {
         super(parent, modal);
         initComponents();
         this.gerIG = gerIG;
+        this.cliSelecionado = null;
+        
     }
 
     /**
@@ -143,17 +149,9 @@ public class DlgCadPedido extends javax.swing.JDialog {
 
             },
             new String [] {
-                "Sabor", "Valor", "Bebida"
+                "Pastel", "Bebida", "Valor"
             }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Float.class, java.lang.Object.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
+        ));
         jScrollPane1.setViewportView(tblPedido);
 
         lblTotal.setFont(new java.awt.Font("Arial", 3, 14)); // NOI18N
@@ -184,19 +182,22 @@ public class DlgCadPedido extends javax.swing.JDialog {
                     .addComponent(lblCadPedido)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblPastel)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGap(64, 64, 64)
                                 .addComponent(jButton1)
                                 .addGap(74, 74, 74))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(51, 51, 51)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblPastel)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(lblValUnit)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtValUnit, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(cmbPasteis, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addGap(51, 51, 51)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(lblValUnit)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(txtValUnit, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(cmbPasteis, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblNome)
@@ -249,7 +250,8 @@ public class DlgCadPedido extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnPesqCliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesqCliActionPerformed
-        // TODO add your handling code here:
+        cliSelecionado = gerIG.abrirPesqCliente();
+        txtNome.setText(cliSelecionado.getNome());
     }//GEN-LAST:event_btnPesqCliActionPerformed
 
     private void cmbPasteisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbPasteisActionPerformed

@@ -72,6 +72,7 @@ public class DlgCadCliente extends javax.swing.JDialog {
         btnAlterar = new javax.swing.JButton();
         btnNovo = new javax.swing.JButton();
         btnPesquisar = new javax.swing.JButton();
+        btnLimpar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -167,6 +168,11 @@ public class DlgCadCliente extends javax.swing.JDialog {
         );
 
         btnAlterar.setText("Alterar");
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
+            }
+        });
 
         btnNovo.setText("Novo");
         btnNovo.addActionListener(new java.awt.event.ActionListener() {
@@ -182,6 +188,13 @@ public class DlgCadCliente extends javax.swing.JDialog {
             }
         });
 
+        btnLimpar.setText("Limpar Campos");
+        btnLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimparActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -190,7 +203,8 @@ public class DlgCadCliente extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnLimpar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -297,7 +311,8 @@ public class DlgCadCliente extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAlterar)
-                    .addComponent(btnNovo))
+                    .addComponent(btnNovo)
+                    .addComponent(btnLimpar))
                 .addContainerGap())
         );
 
@@ -361,6 +376,45 @@ public class DlgCadCliente extends javax.swing.JDialog {
         }
         limparCampos();
     }//GEN-LAST:event_btnNovoActionPerformed
+
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        String nome = txtNome.getText();
+        String cpf = txtCpf.getText();
+        String txtDtNasc = txtData.getText();
+        char sexo = (char) grpSexo.getSelection().getMnemonic();
+        String rua = txtRua.getText();
+        String txtNumero = txtNum.getText();
+        String complemento = txtComplemento.getText();
+        String bairro = txtBairro.getText();
+        String referencia = txtRef.getText();
+        String telFixo = txtFixo.getText();
+        String celular = txtCel.getText();
+        String email = txtEmail.getText();
+
+        if (validarCampos()) {
+            try {
+                if (cliSelecionado == null) {
+                    int id = gerIG.getGerDominio().inserirCliente(nome, cpf, FuncoesUteis.strToDate(txtDtNasc), sexo,
+                            rua, Integer.parseInt(txtNumero), complemento, bairro, referencia, telFixo, celular, email);
+                    JOptionPane.showMessageDialog(this, "Cliente " + id + " inserido com sucesso");
+                } else {
+                    gerIG.getGerDominio().alterarCliente(cliSelecionado, nome, cpf, FuncoesUteis.strToDate(txtDtNasc), sexo,
+                            rua, Integer.parseInt(txtNumero), complemento, bairro, referencia, telFixo, celular, email);
+                    JOptionPane.showMessageDialog(this, "Cliente " + cliSelecionado.getIdCliente() + " alterado com sucesso");
+                }
+
+            } catch (HibernateException ex) {
+                JOptionPane.showMessageDialog(this, "ERRO ao alterar cliente. " + ex, "ERRO Cliente", JOptionPane.ERROR_MESSAGE);
+            } catch (ParseException ex) {
+                JOptionPane.showMessageDialog(this, "ERRO na data.", "ERRO Cliente", JOptionPane.ERROR_MESSAGE);
+            }
+
+        }   
+    }//GEN-LAST:event_btnAlterarActionPerformed
+
+    private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
+        limparCampos();
+    }//GEN-LAST:event_btnLimparActionPerformed
     
     private void habilitarBotoes() {
         if (cliSelecionado == null) {
@@ -454,6 +508,7 @@ public class DlgCadCliente extends javax.swing.JDialog {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlterar;
+    private javax.swing.JButton btnLimpar;
     private javax.swing.JButton btnNovo;
     private javax.swing.JButton btnPesquisar;
     private javax.swing.ButtonGroup grpSexo;

@@ -41,10 +41,6 @@ public class GerenciadorDominio {
         genDao.excluir(obj);
     }
     
-    public List listar(Class classe) throws HibernateException {
-        return genDao.listar(classe);
-    }
-    
     public int inserirCliente(String nome, String cpf, Date dtNasc, char sexo, String rua,
             int numero, String complemento, String bairro, String referencia, String telFixo,
             String celular, String email) throws HibernateException {

@@ -16,24 +16,19 @@ public class ClienteDAO extends GenericDAO  {
 
     private List<Cliente> pesquisar(String txtPesq) throws HibernateException {
 
-        Session sessao = null;
         List lista = null;
+        Session sessao = null;
         try {
             sessao = ConexaoHibernate.getSessionFactory().openSession();
             sessao.beginTransaction();
 
-            // CONSULTA COM CRITERIA
             CriteriaBuilder builder = sessao.getCriteriaBuilder();
             CriteriaQuery consulta = builder.createQuery(Cliente.class);
 
-            // ASSOCIAR e PEGAR A TABELA
             Root tabela = consulta.from(Cliente.class);
+
             Predicate restricoes = null;
-
-            // MUDAR o FETCH
-            tabela.fetch("pedidos", JoinType.INNER);
-            consulta.distinct(true);
-
+            
             restricoes = builder.like(tabela.get("nome"), txtPesq + "%");
 
             consulta.where(restricoes);
@@ -41,15 +36,17 @@ public class ClienteDAO extends GenericDAO  {
 
             sessao.getTransaction().commit();
             sessao.close();
-        } catch (HibernateException erro) {
+        } catch (HibernateException ex) {
             if (sessao != null) {
                 sessao.getTransaction().rollback();
                 sessao.close();
             }
-            throw new HibernateException(erro);
+            throw new HibernateException(ex);
         }
         return lista;
+
     }
+
 
     public List<Cliente> pesquisarPorNome(String txtPesq) throws HibernateException {
         return pesquisar(txtPesq);
