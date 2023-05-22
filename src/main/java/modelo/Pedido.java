@@ -1,13 +1,17 @@
  package modelo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -15,7 +19,6 @@ import javax.persistence.TemporalType;
 
 
 @Entity
-@Table (name= "Pedido", schema= "Pastelaria")
 public class Pedido implements Serializable{
     
     @Id
@@ -30,6 +33,19 @@ public class Pedido implements Serializable{
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idCliente")
     private Cliente cliente;
+    
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "Pedido_Pastel", joinColumns = {
+    @JoinColumn(name = "idPedido")}, inverseJoinColumns = {
+    @JoinColumn(name = "idPastel")})
+    private List<Pastel> pasteis = new ArrayList();
+    
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "Pedido_Bebida", joinColumns = {
+    @JoinColumn(name = "idPedido")}, inverseJoinColumns = {
+    @JoinColumn(name = "idBebida")})
+    private List<Bebida> bebidas = new ArrayList();
+
 
     public Pedido() {
     }

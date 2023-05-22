@@ -5,25 +5,34 @@
 package modelo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 @Entity
-@Table (name= "Pastel", schema= "Pastelaria")
 public class Pastel implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idPastel;
-    @Column
     private String recheio;
-    @Column
     private float valor;
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "Pedido_Pastel", joinColumns = {
+    @JoinColumn(name = "idPastel")}, inverseJoinColumns = {
+    @JoinColumn(name = "idPedido")})
+    private List<Pedido> pedidos = new ArrayList();
+
+    
     public Pastel(int idPastel, String recheio, float valor) {
         this.idPastel = idPastel;
         this.recheio = recheio;

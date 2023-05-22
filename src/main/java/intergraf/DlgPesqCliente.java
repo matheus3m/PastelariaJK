@@ -5,6 +5,12 @@
 package intergraf;
 
 import gerTarefas.GerenciadorInterGraf;
+import java.text.ParseException;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import modelo.Cliente;
+import org.hibernate.HibernateException;
 
 /**
  *
@@ -13,13 +19,19 @@ import gerTarefas.GerenciadorInterGraf;
 public class DlgPesqCliente extends javax.swing.JDialog {
 
     private GerenciadorInterGraf gerIG;
+    private Cliente cliSelecionado;
     
     public DlgPesqCliente(java.awt.Frame parent, boolean modal, GerenciadorInterGraf gerIG ) {
         super(parent, modal);
         initComponents();
         this.gerIG = gerIG;
+        cliSelecionado = null;
     }
 
+    public Cliente getClienteSelecionado() {
+        return cliSelecionado;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -36,24 +48,35 @@ public class DlgPesqCliente extends javax.swing.JDialog {
         tblClientes = new javax.swing.JTable();
         btnSelecionar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         lblNome.setText("Nome");
 
         btnPesquisar.setText("Pesquisar");
+        btnPesquisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPesquisarActionPerformed(evt);
+            }
+        });
 
         tblClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Nome", "CPF", "Cidade", "Celular"
+                "Nome", "Celular"
             }
         ));
         jScrollPane1.setViewportView(tblClientes);
 
         btnSelecionar.setText("Selecionar");
+        btnSelecionar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSelecionarActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setText("Excluir");
         btnExcluir.addActionListener(new java.awt.event.ActionListener() {
@@ -61,6 +84,8 @@ public class DlgPesqCliente extends javax.swing.JDialog {
                 btnExcluirActionPerformed(evt);
             }
         });
+
+        btnCancelar.setText("Cancelar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -70,19 +95,20 @@ public class DlgPesqCliente extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblNome)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnPesquisar))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnSelecionar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnExcluir)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(lblNome)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(btnPesquisar)
+                            .addGap(0, 0, Short.MAX_VALUE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(btnSelecionar)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(btnExcluir)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnCancelar))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -94,11 +120,12 @@ public class DlgPesqCliente extends javax.swing.JDialog {
                     .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnPesquisar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSelecionar)
-                    .addComponent(btnExcluir))
+                    .addComponent(btnExcluir)
+                    .addComponent(btnCancelar))
                 .addContainerGap())
         );
 
@@ -106,11 +133,58 @@ public class DlgPesqCliente extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        // TODO add your handling code here:
+        int linha = tblClientes.getSelectedRow();
+
+        if (linha >= 0) {
+            try {
+                Cliente cli = (Cliente) tblClientes.getValueAt(linha, 0);
+                gerIG.getGerDominio().excluir(cli);
+                JOptionPane.showMessageDialog(this, "Cliente excluído com sucesso.");
+                ((DefaultTableModel) tblClientes.getModel()).removeRow(linha);
+            } catch (HibernateException ex) {
+                JOptionPane.showMessageDialog(this, "ERRO ao excluir.", "Excluir", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione um Cliente.", "Pesquisar", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnSelecionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelecionarActionPerformed
+        int linha = tblClientes.getSelectedRow();
+
+        if (linha >= 0) {
+            cliSelecionado = (Cliente) tblClientes.getValueAt(linha, 0);
+            this.setVisible(false);
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione um Cliente.", "Pesquisar", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnSelecionarActionPerformed
+
+    private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
+        try {
+            String pesq = txtNome.getText();
+
+            List<Cliente> lista = gerIG.getGerDominio().pesquisarCliente(pesq);
+
+            // LIMPAR A TABELA
+            ((DefaultTableModel) tblClientes.getModel()).setNumRows(0);
+
+            if (lista.size() == 0) {
+                JOptionPane.showMessageDialog(this, "Não encontrado registros!", "Pesquisar", JOptionPane.ERROR_MESSAGE);
+            } else {
+
+                for (Cliente cli : lista) {
+                    ((DefaultTableModel) tblClientes.getModel()).addRow(cli.toArray());
+                }
+            }
+        } catch (HibernateException | ParseException ex) {
+            JOptionPane.showMessageDialog(this, "ERRO ao pesquisar! " + ex, "Pesquisar", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnPesquisarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnPesquisar;
     private javax.swing.JButton btnSelecionar;

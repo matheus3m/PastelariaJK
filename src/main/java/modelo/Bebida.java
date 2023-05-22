@@ -5,32 +5,38 @@
 package modelo;
 
 import java.io.Serializable;
-import javax.persistence.Column;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 @Entity
-@Table (name= "Bebida", schema= "Pastelaria")
 public class Bebida implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idBebida;
-    @Column
-    private float valor;
-    @Column
-    private String nome;
+    private String sabor;
+    private float valorbeb;
 
-    public Bebida(int idBebida, float valor, String nome) {
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "Pedido_Bebida", joinColumns = {
+    @JoinColumn(name = "idBebida")}, inverseJoinColumns = {
+    @JoinColumn(name = "idPedido")})
+    private List<Pedido> pedidos = new ArrayList();
+
+    public Bebida(int idBebida, String tsabor, float valorbeb) {
         this.idBebida = idBebida;
-        this.valor = valor;
-        this.nome = nome;
+        this.sabor = tsabor;
+        this.valorbeb = valorbeb;
     }
-    
-   
+
     public int getIdBebida() {
         return idBebida;
     }
@@ -39,19 +45,30 @@ public class Bebida implements Serializable{
         this.idBebida = idBebida;
     }
 
-    public float getValor() {
-        return valor;
+    public String getTsabor() {
+        return sabor;
     }
 
-    public void setValor(float valor) {
-        this.valor = valor;
+    public void setTsabor(String tsabor) {
+        this.sabor = tsabor;
     }
 
-    public String getNome() {
-        return nome;
+    public float getValorbeb() {
+        return valorbeb;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setValorbeb(float valorbeb) {
+        this.valorbeb = valorbeb;
     }
+
+    public List<Pedido> getPedidos() {
+        return pedidos;
+    }
+
+    public void setPedidos(List<Pedido> pedidos) {
+        this.pedidos = pedidos;
+    }
+    
+    
+    
 }

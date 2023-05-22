@@ -4,7 +4,13 @@
  */
 package gerTarefas;
 
+import gerDados.ClienteDAO;
 import gerDados.ConexaoHibernate;
+import gerDados.GenericDAO;
+import java.util.Date;
+import java.util.List;
+import javax.swing.Icon;
+import modelo.Cliente;
 import org.hibernate.HibernateException;
 
 /**
@@ -13,9 +19,61 @@ import org.hibernate.HibernateException;
  */
 public class GerenciadorDominio {
     
+    private GenericDAO genDao;
+    private ClienteDAO cliDao;
+    
     public GerenciadorDominio() throws HibernateException {
         
         ConexaoHibernate.getSessionFactory().openSession();
+        genDao = new GenericDAO();
+        cliDao = new ClienteDAO();
     }
     
+    public List<Cliente> pesquisarCliente(String txtPesq) throws HibernateException {
+
+        List<Cliente> lista = null;  
+        lista = cliDao.pesquisarPorNome(txtPesq);
+        return lista;
+
+    }
+    
+    public void excluir(Object obj) throws HibernateException {
+        genDao.excluir(obj);
+    }
+    
+    public List listar(Class classe) throws HibernateException {
+        return genDao.listar(classe);
+    }
+    
+    public int inserirCliente(String nome, String cpf, Date dtNasc, char sexo, String rua,
+            int numero, String complemento, String bairro, String referencia, String telFixo,
+            String celular, String email) throws HibernateException {
+
+        Cliente cli = new Cliente(nome, cpf, dtNasc, sexo, rua, numero,
+                complemento, bairro, referencia, telFixo, celular, email);
+
+        cliDao.inserir(cli);
+        return cli.getIdCliente();
+    }
+    
+    public void alterarCliente(Cliente cli, String nome, String cpf, Date dtNasc, char sexo, String rua,
+            int numero, String complemento, String bairro, String referencia, String telFixo,
+            String celular, String email) throws HibernateException {
+
+        cli.setNome(nome);
+        cli.setCpf(cpf);
+        cli.setDtNasc(dtNasc);
+        cli.setSexo(sexo);
+        cli.setRua(rua);
+        cli.setNumero(numero);
+        
+        cli.setComplemento(complemento);
+        cli.setBairro(bairro);
+        cli.setReferencia(referencia);
+        cli.setTelFixo(telFixo);
+        cli.setCelular(celular);
+        cli.setEmail(email);
+
+        cliDao.alterar(cli);
+    }
 }

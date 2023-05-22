@@ -11,8 +11,14 @@ import intergraf.DlgPesqPedido;
 import intergraf.FrmPrincipal;
 import java.awt.Frame;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import modelo.Cliente;
+import modelo.Pedido;
+import org.hibernate.HibernateException;
 
 public class GerenciadorInterGraf {
 
@@ -24,12 +30,21 @@ public class GerenciadorInterGraf {
     private GerenciadorDominio gerDom;
     
     public GerenciadorInterGraf() {
-       gerDom = new GerenciadorDominio();
-       princ = null;
-       cli = null;
-       ped = null;
-       pesqCli = null;
-       pesqPed = null; 
+        try {
+            gerDom = new GerenciadorDominio();
+            princ = null;
+            cli = null;
+            ped = null;
+            pesqCli = null;
+            pesqPed = null;
+        } catch (HibernateException erro) {
+            JOptionPane.showMessageDialog(princ, erro);
+            System.exit(-1);
+        }
+    }
+    
+    public GerenciadorDominio getGerDominio() {
+        return gerDom;
     }
     
     private JDialog abrirJanela(java.awt.Frame parent, JDialog dlg, Class classe) {
@@ -57,12 +72,14 @@ public class GerenciadorInterGraf {
         cli = (DlgCadCliente) abrirJanela(princ, cli, DlgCadCliente.class);
     }
     
-    public void abrirPesqCliente() {
+    public Cliente abrirPesqCliente() {
         pesqCli = (DlgPesqCliente) abrirJanela(princ, pesqCli, DlgPesqCliente.class);
+        return pesqCli.getClienteSelecionado();
     }
     
-    public void abrirPesqPedido() {
+    public Pedido abrirPesqPedido() {
         pesqPed = (DlgPesqPedido) abrirJanela(princ, pesqPed, DlgPesqPedido.class);
+        return pesqPed.getPedidoSelecionado();
     }
     
     public static void main(String args[]) {

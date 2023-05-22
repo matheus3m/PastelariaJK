@@ -5,6 +5,7 @@
 package intergraf;
 
 import gerTarefas.GerenciadorInterGraf;
+import modelo.Pedido;
 
 /**
  *
@@ -13,11 +14,17 @@ import gerTarefas.GerenciadorInterGraf;
 public class DlgPesqPedido extends javax.swing.JDialog {
 
     private GerenciadorInterGraf gerIG;
+    private Pedido pedSelecionado;
     
     public DlgPesqPedido(java.awt.Frame parent, boolean modal, GerenciadorInterGraf gerIG ) {
          super(parent, modal);
         initComponents();
         this.gerIG = gerIG;
+        pedSelecionado = null;
+    }
+    
+    public Pedido getPedidoSelecionado() {
+        return pedSelecionado;
     }
 
     /**

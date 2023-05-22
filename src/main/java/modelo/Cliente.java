@@ -4,7 +4,9 @@
  */
 package modelo;
 
+import gerTarefas.FuncoesUteis;
 import java.io.Serializable;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,7 +26,6 @@ import javax.persistence.TemporalType;
  * @author mathe
  */
 @Entity
-@Table (name= "Cliente", schema= "Pastelaria")
 public class Cliente implements Serializable {
 
     @Id
@@ -43,23 +44,54 @@ public class Cliente implements Serializable {
     @Column(length = 1)
     private char sexo;
     
+    private String rua;
+    private int numero; 
+    private String complemento;
+    private String bairro;
+    private String referencia;
     private String telFixo;
     private String celular;
     private String email;
-    private String bairro;
-    private String rua;
     
-    @Column(length = 3)
-    private int numero;
-    private String complemento;
-    private String referencia;
-    private String Cidade;
     
     @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
     private List<Pedido> pedidos = new ArrayList();
 
     public Cliente() {
     }
+
+    public Cliente(int idCliente, String nome, String cpf, Date dtNasc, char sexo, String rua, int numero, String complemento, String bairro, String referencia, String telFixo, String celular, String email) {
+        this.idCliente = idCliente;
+        this.nome = nome;
+        this.cpf = cpf;
+        this.dtNasc = dtNasc;
+        this.sexo = sexo;
+        this.rua = rua;
+        this.numero = numero;
+        this.complemento = complemento;
+        this.bairro = bairro;
+        this.referencia = referencia;
+        this.telFixo = telFixo;
+        this.celular = celular;
+        this.email = email;
+    }
+
+    public Cliente(String nome, String cpf, Date dtNasc, char sexo, String rua, int numero, String complemento, String bairro, String referencia, String telFixo, String celular, String email) {
+        this.nome = nome;
+        this.cpf = cpf;
+        this.dtNasc = dtNasc;
+        this.sexo = sexo;
+        this.rua = rua;
+        this.numero = numero;
+        this.complemento = complemento;
+        this.bairro = bairro;
+        this.referencia = referencia;
+        this.telFixo = telFixo;
+        this.celular = celular;
+        this.email = email;
+    }
+    
+    
 
     public List<Pedido> getPedidos() {
         return pedidos;
@@ -69,38 +101,7 @@ public class Cliente implements Serializable {
         this.pedidos = pedidos;
     }
 
-    public Cliente(String nome, String cpf, Date dtNasc, char sexo, String telFixo, String celular, String email, String bairro, String rua, int numero, String complemento, String referencia, String Cidade) {
-        this.nome = nome;
-        this.cpf = cpf;
-        this.dtNasc = dtNasc;
-        this.sexo = sexo;
-        this.telFixo = telFixo;
-        this.celular = celular;
-        this.email = email;
-        this.bairro = bairro;
-        this.rua = rua;
-        this.numero = numero;
-        this.complemento = complemento;
-        this.referencia = referencia;
-        this.Cidade = Cidade;
-    }
-
-    public Cliente(int idCliente, String nome, String cpf, Date dtNasc, char sexo, String telFixo, String celular, String email, String bairro, String rua, int numero, String complemento, String referencia, String Cidade) {
-        this.idCliente = idCliente;
-        this.nome = nome;
-        this.cpf = cpf;
-        this.dtNasc = dtNasc;
-        this.sexo = sexo;
-        this.telFixo = telFixo;
-        this.celular = celular;
-        this.email = email;
-        this.bairro = bairro;
-        this.rua = rua;
-        this.numero = numero;
-        this.complemento = complemento;
-        this.referencia = referencia;
-        this.Cidade = Cidade;
-    }
+    
 
     public int getIdCliente() {
         return idCliente;
@@ -205,13 +206,13 @@ public class Cliente implements Serializable {
     public void setReferencia(String referencia) {
         this.referencia = referencia;
     }
-
-    public String getCidade() {
-        return Cidade;
+    
+    public String getDataFormatada() throws ParseException {
+        return FuncoesUteis.dateToStr(dtNasc);
     }
-
-    public void setCidade(String Cidade) {
-        this.Cidade = Cidade;
+    
+    public Object[] toArray() throws ParseException {
+        return new Object[]{this, celular};
     }
     
     @Override
