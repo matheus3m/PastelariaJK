@@ -347,7 +347,7 @@ public class DlgCadCliente extends javax.swing.JDialog {
                             rua, Integer.parseInt(txtNumero), complemento, bairro, referencia, telFixo, celular, email);
                     JOptionPane.showMessageDialog(this, "Cliente " + id + " inserido com sucesso");
                 } else {
-                    gerIG.getGerDominio().alterarCliente(cliSelecionado, nome, cpf, FuncoesUteis.strToDate(txtDtNasc), sexo, 
+                    gerIG.getGerDominio().alterarCliente(cliSelecionado, nome, cpf, FuncoesUteis.strToDate(txtDtNasc), sexo,
                             rua, Integer.parseInt(txtNumero), complemento, bairro, referencia, telFixo, celular, email);
                     JOptionPane.showMessageDialog(this, "Cliente " + cliSelecionado.getIdCliente() + " alterado com sucesso");
                 }
@@ -357,7 +357,10 @@ public class DlgCadCliente extends javax.swing.JDialog {
             } catch (ParseException ex) {
                 JOptionPane.showMessageDialog(this, "ERRO na data.", "ERRO Cliente", JOptionPane.ERROR_MESSAGE);
             }
-        }    }//GEN-LAST:event_btnNovoActionPerformed
+            
+        }
+        limparCampos();
+    }//GEN-LAST:event_btnNovoActionPerformed
     
     private void habilitarBotoes() {
         if (cliSelecionado == null) {
@@ -432,6 +435,22 @@ public class DlgCadCliente extends javax.swing.JDialog {
             return false;
         }
 
+    }
+    
+    private void limparCampos() {
+        cliSelecionado = null;
+        txtNome.setText("");
+        txtCpf.setText("");
+        txtData.setText("");
+        txtRua.setText("");
+        txtNum.setText("");
+        txtComplemento.setText("");
+        txtBairro.setText("");
+        txtRef.setText("");
+        txtFixo.setText("");
+        txtCel.setText("");
+        txtEmail.setText("");
+        habilitarBotoes();
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlterar;
