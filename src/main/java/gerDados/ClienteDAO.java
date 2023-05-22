@@ -21,15 +21,21 @@ public class ClienteDAO extends GenericDAO  {
         try {
             sessao = ConexaoHibernate.getSessionFactory().openSession();
             sessao.beginTransaction();
+
+            // CONSULTA COM CRITERIA
             CriteriaBuilder builder = sessao.getCriteriaBuilder();
             CriteriaQuery consulta = builder.createQuery(Cliente.class);
+
+            // ASSOCIAR e PEGAR A TABELA
             Root tabela = consulta.from(Cliente.class);
             Predicate restricoes = null;
+
+            // MUDAR o FETCH
             tabela.fetch("pedidos", JoinType.INNER);
             consulta.distinct(true);
-            
+
             restricoes = builder.like(tabela.get("nome"), txtPesq + "%");
-                    
+
             consulta.where(restricoes);
             lista = sessao.createQuery(consulta).getResultList();
 
