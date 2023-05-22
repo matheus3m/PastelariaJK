@@ -85,5 +85,6 @@ public class GerenciadorInterGraf {
     public static void main(String args[]) {
         GerenciadorInterGraf gerIG = new GerenciadorInterGraf();
         gerIG.abrirJanPrincipal();
+        gerIG.abrirJanPrincipal();
     }
 }
