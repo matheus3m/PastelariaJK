@@ -72,29 +72,6 @@ public class GenericDAO {
         }    
     }  
     
-    public List listar(Class classe) throws HibernateException {
-        Session sessao = null;
-        List lista = null;
-        try {
-            sessao = ConexaoHibernate.getSessionFactory().openSession();
-            sessao.beginTransaction();
-
-            // OPERAÇÕES
-            CriteriaQuery consulta = sessao.getCriteriaBuilder().createQuery(classe);
-            consulta.from(classe);
-            lista = sessao.createQuery(consulta).getResultList();
-            
-            sessao.getTransaction().commit();
-            sessao.close();
-        } catch ( HibernateException erro) {
-            if ( sessao != null ){
-                sessao.getTransaction().rollback();
-                sessao.close();
-            }
-            throw new HibernateException(erro);
-        }
-                
-        return lista;
-    }
+     
     
 }
