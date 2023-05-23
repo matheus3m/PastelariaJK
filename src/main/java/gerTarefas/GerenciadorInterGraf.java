@@ -82,6 +82,16 @@ public class GerenciadorInterGraf {
         return pesqPed.getPedidoSelecionado();
     }
     
+    public void carregarCombo(JComboBox combo, Class classe) {
+        try {
+            List lista = gerDom.listar(classe);
+            combo.setModel(new DefaultComboBoxModel(lista.toArray()));
+
+        } catch (HibernateException ex) {
+            JOptionPane.showMessageDialog(princ, "Erro ao listar itens.");
+        }
+    }
+    
     public static void main(String args[]) {
         GerenciadorInterGraf gerIG = new GerenciadorInterGraf();
         gerIG.abrirJanPrincipal();

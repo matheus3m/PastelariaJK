@@ -5,9 +5,14 @@
 package intergraf;
 
 import gerTarefas.GerenciadorInterGraf;
+import java.awt.Color;
 import java.text.ParseException;
+import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import modelo.Bebida;
 import modelo.Cliente;
+import modelo.Pastel;
 
 /**
  *
@@ -25,6 +30,37 @@ public class DlgCadPedido extends javax.swing.JDialog {
         this.cliSelecionado = null;
         
     }
+    
+    private boolean validar(String nome) {
+        String msgErro = "";
+        lblNome.setForeground(Color.black);
+        lblPastel.setForeground(Color.black);
+
+        if (nome.isEmpty()) {
+            msgErro = msgErro + "Nome inválido!\n";
+            lblNome.setForeground(Color.red);
+        }
+
+        if (msgErro.isEmpty()) {
+            return true;
+        } else {
+
+            JOptionPane.showMessageDialog(this, msgErro, "Erro cadastro PEDIDO", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+    }
+    
+    private void adicionarTabela(Pastel pastel, Bebida bebida) {
+        
+        ((DefaultTableModel) tblPedido.getModel()).addRow(new Object[3]);
+
+        int linha = tblPedido.getRowCount() - 1;
+        int col = 0;
+        tblPedido.setValueAt(pastel, linha, col++);
+        tblPedido.setValueAt(bebida, linha, col++);
+        tblPedido.setValueAt(pastel.getValor()+bebida.getValorbeb(), linha, col++);
+
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -41,22 +77,20 @@ public class DlgCadPedido extends javax.swing.JDialog {
         txtNome = new javax.swing.JTextField();
         cmbPasteis = new javax.swing.JComboBox<>();
         btnPesqCli = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
-        lblBebidas = new javax.swing.JLabel();
-        rdbGuaranaLitro = new javax.swing.JRadioButton();
-        rdbSucoManga = new javax.swing.JRadioButton();
-        rdbSucoLaranja = new javax.swing.JRadioButton();
-        rdbLataGuarana = new javax.swing.JRadioButton();
-        rdbCocaColaLitro = new javax.swing.JRadioButton();
-        jButton1 = new javax.swing.JButton();
+        btnAdicionar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblPedido = new javax.swing.JTable();
         lblTotal = new javax.swing.JLabel();
         txtTotal = new javax.swing.JTextField();
-        lblValUnit = new javax.swing.JLabel();
-        txtValUnit = new javax.swing.JTextField();
+        cmbBebidas = new javax.swing.JComboBox<>();
+        lblPastel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
 
         lblCadPedido.setFont(new java.awt.Font("Arial", 3, 18)); // NOI18N
         lblCadPedido.setForeground(new java.awt.Color(255, 102, 51));
@@ -79,68 +113,10 @@ public class DlgCadPedido extends javax.swing.JDialog {
             }
         });
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        lblBebidas.setFont(new java.awt.Font("Arial", 3, 14)); // NOI18N
-        lblBebidas.setText("Bebidas");
-
-        rdbGuaranaLitro.setText("Refri. Guarana 1L");
-
-        rdbSucoManga.setText("Suco de Manga");
-        rdbSucoManga.addActionListener(new java.awt.event.ActionListener() {
+        btnAdicionar.setText("Adicionar ao Pedido");
+        btnAdicionar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rdbSucoMangaActionPerformed(evt);
-            }
-        });
-
-        rdbSucoLaranja.setText("Suco de Laranja");
-        rdbSucoLaranja.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rdbSucoLaranjaActionPerformed(evt);
-            }
-        });
-
-        rdbLataGuarana.setText("Lata Guaraná");
-
-        rdbCocaColaLitro.setText("Refri. CocaCola 1L");
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblBebidas)
-                    .addComponent(rdbGuaranaLitro)
-                    .addComponent(rdbSucoManga)
-                    .addComponent(rdbSucoLaranja)
-                    .addComponent(rdbLataGuarana)
-                    .addComponent(rdbCocaColaLitro))
-                .addContainerGap(16, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblBebidas)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(rdbSucoLaranja)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(rdbSucoManga)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(rdbGuaranaLitro)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(rdbCocaColaLitro)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(rdbLataGuarana)
-                .addContainerGap(24, Short.MAX_VALUE))
-        );
-
-        jButton1.setText("Adicionar ao Pedido");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnAdicionarActionPerformed(evt);
             }
         });
 
@@ -163,14 +139,13 @@ public class DlgCadPedido extends javax.swing.JDialog {
             }
         });
 
-        lblValUnit.setFont(new java.awt.Font("Arial", 3, 14)); // NOI18N
-        lblValUnit.setText("VAL UNITARIO");
-
-        txtValUnit.addActionListener(new java.awt.event.ActionListener() {
+        cmbBebidas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtValUnitActionPerformed(evt);
+                cmbBebidasActionPerformed(evt);
             }
         });
+
+        lblPastel1.setText("Bebida");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -178,40 +153,34 @@ public class DlgCadPedido extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lblCadPedido)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblCadPedido)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblPastel)
+                                .addGap(23, 23, 23)
+                                .addComponent(cmbPasteis, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblNome)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnPesqCli, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblPastel1)
+                        .addGap(18, 18, 18)
+                        .addComponent(cmbBebidas, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(64, 64, 64)
-                                .addComponent(jButton1)
-                                .addGap(74, 74, 74))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblPastel)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(51, 51, 51)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(lblValUnit)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(txtValUnit, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addComponent(cmbPasteis, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblNome)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnPesqCli, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblTotal)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblTotal)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnAdicionar, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -219,27 +188,24 @@ public class DlgCadPedido extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblCadPedido)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNome)
                     .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnPesqCli))
+                .addGap(31, 31, 31)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmbPasteis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblPastel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cmbPasteis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblPastel))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblValUnit)
-                            .addComponent(txtValUnit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(32, 32, 32)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmbBebidas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblPastel1))
                 .addGap(18, 18, 18)
+                .addComponent(btnAdicionar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTotal)
                     .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -249,55 +215,60 @@ public class DlgCadPedido extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnPesqCliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesqCliActionPerformed
-        cliSelecionado = gerIG.abrirPesqCliente();
-        txtNome.setText(cliSelecionado.getNome());
-    }//GEN-LAST:event_btnPesqCliActionPerformed
-
     private void cmbPasteisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbPasteisActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbPasteisActionPerformed
-
-    private void rdbSucoMangaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdbSucoMangaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rdbSucoMangaActionPerformed
-
-    private void rdbSucoLaranjaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdbSucoLaranjaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rdbSucoLaranjaActionPerformed
 
     private void txtTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTotalActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtTotalActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
+        
+        String nome = txtNome.getText();
+        Pastel pastel = (Pastel) cmbPasteis.getSelectedItem();
+        Bebida bebida = (Bebida) cmbBebidas.getSelectedItem();
+        
+        
+        if (validar(nome)) {
+            adicionarTabela(pastel, bebida);
+        }
+        
+        cmbPasteis.setSelectedIndex(11);
+        cmbBebidas.setSelectedIndex(21);
+        
+    }//GEN-LAST:event_btnAdicionarActionPerformed
 
-    private void txtValUnitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtValUnitActionPerformed
+    private void cmbBebidasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbBebidasActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtValUnitActionPerformed
+    }//GEN-LAST:event_cmbBebidasActionPerformed
+
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        gerIG.carregarCombo(cmbPasteis, Pastel.class);
+        gerIG.carregarCombo(cmbBebidas, Bebida.class);
+        
+        cmbPasteis.setSelectedIndex(11);
+        cmbBebidas.setSelectedIndex(21);
+    }//GEN-LAST:event_formComponentShown
+
+    private void btnPesqCliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesqCliActionPerformed
+        cliSelecionado = gerIG.abrirPesqCliente();
+        txtNome.setText(cliSelecionado.getNome());
+    }//GEN-LAST:event_btnPesqCliActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAdicionar;
     private javax.swing.JButton btnPesqCli;
+    private javax.swing.JComboBox<String> cmbBebidas;
     private javax.swing.JComboBox<String> cmbPasteis;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lblBebidas;
     private javax.swing.JLabel lblCadPedido;
     private javax.swing.JLabel lblNome;
     private javax.swing.JLabel lblPastel;
+    private javax.swing.JLabel lblPastel1;
     private javax.swing.JLabel lblTotal;
-    private javax.swing.JLabel lblValUnit;
-    private javax.swing.JRadioButton rdbCocaColaLitro;
-    private javax.swing.JRadioButton rdbGuaranaLitro;
-    private javax.swing.JRadioButton rdbLataGuarana;
-    private javax.swing.JRadioButton rdbSucoLaranja;
-    private javax.swing.JRadioButton rdbSucoManga;
     private javax.swing.JTable tblPedido;
     private javax.swing.JTextField txtNome;
     private javax.swing.JTextField txtTotal;
-    private javax.swing.JTextField txtValUnit;
     // End of variables declaration//GEN-END:variables
 }

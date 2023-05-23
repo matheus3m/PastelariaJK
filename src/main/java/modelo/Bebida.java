@@ -37,6 +37,11 @@ public class Bebida implements Serializable{
         this.valorbeb = valorbeb;
     }
 
+    public Bebida() {
+    }
+
+    
+    
     public int getIdBebida() {
         return idBebida;
     }
@@ -69,6 +74,10 @@ public class Bebida implements Serializable{
         this.pedidos = pedidos;
     }
     
-    
+    @Override
+    public String toString() {
+        return sabor;
+    }
+
     
 }

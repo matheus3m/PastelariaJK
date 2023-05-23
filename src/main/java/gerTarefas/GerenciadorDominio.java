@@ -7,6 +7,7 @@ package gerTarefas;
 import gerDados.ClienteDAO;
 import gerDados.ConexaoHibernate;
 import gerDados.GenericDAO;
+import gerDados.PedidoDAO;
 import java.util.Date;
 import java.util.List;
 import javax.swing.Icon;
@@ -21,12 +22,18 @@ public class GerenciadorDominio {
     
     private GenericDAO genDao;
     private ClienteDAO cliDao;
+    private PedidoDAO pedDao;
     
     public GerenciadorDominio() throws HibernateException {
         
         ConexaoHibernate.getSessionFactory().openSession();
         genDao = new GenericDAO();
         cliDao = new ClienteDAO();
+        pedDao = new PedidoDAO();
+    }
+    
+    public List listar(Class classe) throws HibernateException {
+        return genDao.listar(classe);
     }
     
     public List<Cliente> pesquisarCliente(String txtPesq) throws HibernateException {

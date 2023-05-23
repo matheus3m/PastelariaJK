@@ -39,6 +39,11 @@ public class Pastel implements Serializable{
         this.valor = valor;
     }
 
+    public Pastel() {
+    }
+    
+    
+
     public int getIdPastel() {
         return idPastel;
     }
@@ -61,6 +66,11 @@ public class Pastel implements Serializable{
 
     public void setValor(float valor) {
         this.valor = valor;
+    }
+
+    @Override
+    public String toString() {
+        return recheio;
     }
     
     
