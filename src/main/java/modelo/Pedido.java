@@ -94,7 +94,22 @@ public class Pedido implements Serializable{
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
-    
-    
+
+    public List<Pastel> getPasteis() {
+        return pasteis;
+    }
+
+    public void setPasteis(List<Pastel> pasteis) {
+        this.pasteis = pasteis;
+    }
+
+    public List<Bebida> getBebidas() {
+        return bebidas;
+    }
+
+    public void setBebidas(List<Bebida> bebidas) {
+        this.bebidas = bebidas;
+    }
+  
     
 }

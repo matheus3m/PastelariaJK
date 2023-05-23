@@ -7,6 +7,8 @@ package intergraf;
 import gerTarefas.GerenciadorInterGraf;
 import java.awt.Color;
 import java.text.ParseException;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -22,6 +24,7 @@ public class DlgCadPedido extends javax.swing.JDialog {
     
     private Cliente cliSelecionado;
     private GerenciadorInterGraf gerIG;
+   
     
     public DlgCadPedido(java.awt.Frame parent, boolean modal, GerenciadorInterGraf gerIG) {
         super(parent, modal);
@@ -81,9 +84,12 @@ public class DlgCadPedido extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblPedido = new javax.swing.JTable();
         lblTotal = new javax.swing.JLabel();
-        txtTotal = new javax.swing.JTextField();
         cmbBebidas = new javax.swing.JComboBox<>();
         lblPastel1 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        lblUnit = new javax.swing.JLabel();
+        lblVlrTotal = new javax.swing.JLabel();
+        btnFazerPedido = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -133,12 +139,6 @@ public class DlgCadPedido extends javax.swing.JDialog {
         lblTotal.setFont(new java.awt.Font("Arial", 3, 14)); // NOI18N
         lblTotal.setText("Total");
 
-        txtTotal.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtTotalActionPerformed(evt);
-            }
-        });
-
         cmbBebidas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbBebidasActionPerformed(evt);
@@ -146,6 +146,20 @@ public class DlgCadPedido extends javax.swing.JDialog {
         });
 
         lblPastel1.setText("Bebida");
+
+        jLabel1.setText("VALOR UNITÁRIO R$");
+
+        lblUnit.setText("0.00");
+
+        lblVlrTotal.setFont(new java.awt.Font("Arial", 3, 14)); // NOI18N
+        lblVlrTotal.setText("0.00");
+
+        btnFazerPedido.setText("Confirmar Entrega");
+        btnFazerPedido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFazerPedidoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -174,13 +188,17 @@ public class DlgCadPedido extends javax.swing.JDialog {
                         .addGap(18, 18, 18)
                         .addComponent(cmbBebidas, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(lblTotal)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(btnAdicionar, javax.swing.GroupLayout.Alignment.TRAILING))))
+                        .addComponent(btnFazerPedido)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblTotal)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblVlrTotal))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblUnit)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnAdicionar)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -202,13 +220,18 @@ public class DlgCadPedido extends javax.swing.JDialog {
                     .addComponent(cmbBebidas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblPastel1))
                 .addGap(18, 18, 18)
-                .addComponent(btnAdicionar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnAdicionar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1)
+                        .addComponent(lblUnit)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTotal)
-                    .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblVlrTotal)
+                    .addComponent(btnFazerPedido))
                 .addContainerGap())
         );
 
@@ -218,10 +241,6 @@ public class DlgCadPedido extends javax.swing.JDialog {
     private void cmbPasteisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbPasteisActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbPasteisActionPerformed
-
-    private void txtTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTotalActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTotalActionPerformed
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
         
@@ -237,10 +256,12 @@ public class DlgCadPedido extends javax.swing.JDialog {
         cmbPasteis.setSelectedIndex(11);
         cmbBebidas.setSelectedIndex(21);
         
+        lblVlrTotal.setText(String.valueOf(Double.parseDouble(lblVlrTotal.getText())+pastel.getValor()+bebida.getValorbeb()));
+        
     }//GEN-LAST:event_btnAdicionarActionPerformed
 
     private void cmbBebidasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbBebidasActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_cmbBebidasActionPerformed
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
@@ -256,19 +277,34 @@ public class DlgCadPedido extends javax.swing.JDialog {
         txtNome.setText(cliSelecionado.getNome());
     }//GEN-LAST:event_btnPesqCliActionPerformed
 
+    private void btnFazerPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFazerPedidoActionPerformed
+        
+//        if (cliSelecionado != null) {
+//            int idPedido;
+//            idPedido = gerIG.getGerDominio().inserirPedido(Double.parseDouble(lblVlrTotal.getText()), cliSelecionado);
+//            JOptionPane.showMessageDialog(this, "Pedido " + idPedido + " inserido com sucesso.");
+//
+//        } else {
+//            JOptionPane.showMessageDialog(this, "Selecione um cliente.");
+//        }
+    }//GEN-LAST:event_btnFazerPedidoActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdicionar;
+    private javax.swing.JButton btnFazerPedido;
     private javax.swing.JButton btnPesqCli;
     private javax.swing.JComboBox<String> cmbBebidas;
     private javax.swing.JComboBox<String> cmbPasteis;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblCadPedido;
     private javax.swing.JLabel lblNome;
     private javax.swing.JLabel lblPastel;
     private javax.swing.JLabel lblPastel1;
     private javax.swing.JLabel lblTotal;
+    private javax.swing.JLabel lblUnit;
+    private javax.swing.JLabel lblVlrTotal;
     private javax.swing.JTable tblPedido;
     private javax.swing.JTextField txtNome;
-    private javax.swing.JTextField txtTotal;
     // End of variables declaration//GEN-END:variables
 }

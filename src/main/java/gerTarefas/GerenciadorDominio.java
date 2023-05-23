@@ -79,4 +79,35 @@ public class GerenciadorDominio {
 
         cliDao.alterar(cli);
     }
+    
+//    public int inserirPedido(Cliente cli, char entrega, JTable tblPedidos) throws HibernateException {
+//
+//        Pedido ped = new Pedido(new Date(), entrega, 0, cli);
+//        List lista = ped.getItensPedidos();
+//        float valorTotal = 0;
+//
+//        int tam = tblPedidos.getRowCount();
+//        if (tam > 0) {
+//            for (int lin = 0; lin < tam; lin++) {
+//                int col = 0;
+//                Lanche lanche = (Lanche) tblPedidos.getValueAt(lin, col++);
+//                int qtde = (int) tblPedidos.getValueAt(lin, col++);
+//                int maisBife = (int) tblPedidos.getValueAt(lin, col++);
+//                int maisQueijo = (int) tblPedidos.getValueAt(lin, col++);
+//                int maisPresunto = (int) tblPedidos.getValueAt(lin, col++);
+//                int maisOvo = (int) tblPedidos.getValueAt(lin, col++);
+//                String observacao = tblPedidos.getValueAt(lin, col++).toString();
+//
+//                ItemPedido item = new ItemPedido(lanche, ped, qtde, observacao, maisBife, maisOvo, maisPresunto, maisQueijo);
+//                lista.add(item);
+//                valorTotal = valorTotal + lanche.getValor() * qtde;
+//            }
+//            ped.setValorTotal(valorTotal);
+//            genDao.inserir(ped);
+//            return ped.getIdPedido();
+//        } else {
+//            return -1;
+//        }
+//
+//    }
 }
