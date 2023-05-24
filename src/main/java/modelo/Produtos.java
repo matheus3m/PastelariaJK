@@ -18,46 +18,46 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 @Entity
-public class Pastel implements Serializable{
+public class Produtos implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idPastel;
-    private String recheio;
+    private int idProduto;
+    private String produto;
     private float valor;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "Pedido_Pastel", joinColumns = {
-    @JoinColumn(name = "idPastel")}, inverseJoinColumns = {
+    @JoinTable(name = "Pedido_Produto", joinColumns = {
+    @JoinColumn(name = "idProduto")}, inverseJoinColumns = {
     @JoinColumn(name = "idPedido")})
     private List<Pedido> pedidos = new ArrayList();
 
     
-    public Pastel(int idPastel, String recheio, float valor) {
-        this.idPastel = idPastel;
-        this.recheio = recheio;
+    public Produtos(int idProduto, String produto, float valor) {
+        this.idProduto = idProduto;
+        this.produto = produto;
         this.valor = valor;
     }
 
-    public Pastel() {
+    public Produtos() {
     }
     
     
 
-    public int getIdPastel() {
-        return idPastel;
+    public int getIdProduto() {
+        return idProduto;
     }
 
-    public void setIdPastel(int idPastel) {
-        this.idPastel = idPastel;
+    public void setIdProduto(int idProduto) {
+        this.idProduto = idProduto;
     }
 
-    public String getRecheio() {
-        return recheio;
+    public String getProduto() {
+        return produto;
     }
 
-    public void setRecheio(String recheio) {
-        this.recheio = recheio;
+    public void setProduto(String produto) {
+        this.produto = produto;
     }
 
     public float getValor() {
@@ -70,10 +70,10 @@ public class Pastel implements Serializable{
 
     @Override
     public String toString() {
-        return recheio;
+        return produto;
     }
     
-    
-   
-    
+   public String formataPreco(){
+       return "R$ " + Double.toString(getValor())+ "0";
+    }
 }

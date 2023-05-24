@@ -11,10 +11,11 @@
     <property name="hibernate.hbm2ddl.auto">update</property>
     <property name="hibernate.show_sql">true</property>
     <property name="hibernate.format_sql">true</property>
+    <property name="hibernate.hbm2ddl.import_files">dados_iniciais.sql</property>
+    <property name="hibernate.hbm2ddl.import_files_sql_extractor">org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor</property>
     <mapping class="modelo.Cliente"></mapping>
     <mapping class="modelo.Pedido"></mapping>
-    <mapping class="modelo.Pastel"></mapping>
-    <mapping class="modelo.Bebida"></mapping>
+    <mapping class="modelo.Produtos"></mapping>
   </session-factory>
 </hibernate-configuration>
  

@@ -1,0 +1,17 @@
+insert into pastelaria.produtos(produto, valor) values('Coca cola Lata 350ml', 4.50);
+insert into pastelaria.produtos(produto, valor) values('Coca cola 1L', 9.50);
+insert into pastelaria.produtos(produto, valor) values('Coca cola 2l',11.00);
+insert into pastelaria.produtos(produto, valor) values('Guarana Lata Lata 350ml', 4.50);
+insert into pastelaria.produtos(produto, valor) values('Guarana 1L', 9.50);
+insert into pastelaria.produtos(produto, valor) values('Guarana 2L', 11.00);
+insert into pastelaria.produtos(produto, valor) values('Suco de Maracuja', 6.50);
+insert into pastelaria.produtos(produto, valor) values('Suco de Manga', 6.00);
+insert into pastelaria.produtos(produto, valor) values('Suco de Laranja', 6.50);
+insert into pastelaria.produtos(produto, valor) values('Pastel de Presunto e Queijo', 7.00);
+insert into pastelaria.produtos(produto, valor) values('Pastel de Queijo', 6.50);
+insert into pastelaria.produtos(produto, valor) values('Pastel de Palmito', 6.00);
+insert into pastelaria.produtos(produto, valor) values('Pastel de Camarao', 7.00);
+insert into pastelaria.produtos(produto, valor) values('Pastel de Costela', 7.00);
+insert into pastelaria.produtos(produto, valor) values('Pastel de Pizza', 6.50);
+insert into pastelaria.produtos(produto, valor) values('Pastel de Cheddar e Bacon', 6.50);
+insert into pastelaria.produtos(produto, valor) values('Pastel de Bacon', 6.00);

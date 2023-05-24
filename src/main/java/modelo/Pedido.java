@@ -35,17 +35,10 @@ public class Pedido implements Serializable{
     private Cliente cliente;
     
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "Pedido_Pastel", joinColumns = {
+    @JoinTable(name = "Pedido_Produto", joinColumns = {
     @JoinColumn(name = "idPedido")}, inverseJoinColumns = {
-    @JoinColumn(name = "idPastel")})
-    private List<Pastel> pasteis = new ArrayList();
-    
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "Pedido_Bebida", joinColumns = {
-    @JoinColumn(name = "idPedido")}, inverseJoinColumns = {
-    @JoinColumn(name = "idBebida")})
-    private List<Bebida> bebidas = new ArrayList();
-
+    @JoinColumn(name = "idProduto")})
+    private List<Produtos> produto = new ArrayList();
 
     public Pedido() {
     }
@@ -95,21 +88,14 @@ public class Pedido implements Serializable{
         this.cliente = cliente;
     }
 
-    public List<Pastel> getPasteis() {
-        return pasteis;
+    public List<Produtos> getProduto() {
+        return produto;
     }
 
-    public void setPasteis(List<Pastel> pasteis) {
-        this.pasteis = pasteis;
+    public void setProduto(List<Produtos> produto) {
+        this.produto = produto;
     }
-
-    public List<Bebida> getBebidas() {
-        return bebidas;
-    }
-
-    public void setBebidas(List<Bebida> bebidas) {
-        this.bebidas = bebidas;
-    }
-  
+    
+    
     
 }
