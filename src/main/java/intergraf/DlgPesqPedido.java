@@ -5,7 +5,15 @@
 package intergraf;
 
 import gerTarefas.GerenciadorInterGraf;
+import java.text.ParseException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import modelo.Cliente;
 import modelo.Pedido;
+import org.hibernate.HibernateException;
 
 /**
  *
@@ -41,12 +49,18 @@ public class DlgPesqPedido extends javax.swing.JDialog {
         btnPesquisar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblPedidos = new javax.swing.JTable();
+        btnExcluir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         lblPedido.setText("ID Pedido");
 
         btnPesquisar.setText("Pesquisar");
+        btnPesquisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPesquisarActionPerformed(evt);
+            }
+        });
 
         tblPedidos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -58,21 +72,34 @@ public class DlgPesqPedido extends javax.swing.JDialog {
         ));
         jScrollPane1.setViewportView(tblPedidos);
 
+        btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblPedido)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnPesquisar)))
-                .addContainerGap(8, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblPedido)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnPesquisar)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnExcluir)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -84,13 +111,76 @@ public class DlgPesqPedido extends javax.swing.JDialog {
                     .addComponent(btnPesquisar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnExcluir)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
+        try {
+            String pesq = txtID.getText();
+
+            List<Pedido> lista = gerIG.getGerDominio().pesquisarPedido(pesq);
+
+            // Limpar a tabela
+            ((DefaultTableModel) tblPedidos.getModel()).setRowCount(0);
+
+            if (lista.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Não existem registros com essa pesquisa.");
+            } else {
+                for (Pedido ped : lista) {
+                    ((DefaultTableModel) tblPedidos.getModel()).addRow(ped.toArray());
+                }
+            }
+
+        } catch (NumberFormatException ex) {
+            //JOptionPane.showMessageDialog(this, "Favor informar um ID válido. Somente números.");            
+            JOptionPane.showMessageDialog(this, ex);
+        } catch (HibernateException ex) {
+            JOptionPane.showMessageDialog(this, "Erro ao pesquisar pedido." + ex);
+        } catch (ParseException ex) {
+            JOptionPane.showMessageDialog(this, ex);
+        }
+    }//GEN-LAST:event_btnPesquisarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        pedSelecionado = pegarLinhaSelecionada();
+        if (pedSelecionado != null) {
+            if (JOptionPane.showConfirmDialog(this, "Deseja excluir o PEDIDO do cliente?"
+                    + pedSelecionado.getCliente().getNome(), "Confirmar", JOptionPane.YES_NO_OPTION) == JOptionPane.OK_OPTION) {
+                try {
+                    gerIG.getGerDominio().excluir(pedSelecionado);
+                    excluirLinhaSelecionada();
+                    JOptionPane.showMessageDialog(this, "Pedido excluído com sucesso.");
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "ERRO ao excluir CLIENTE.");
+                    Logger.getLogger(DlgPesqPedido.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
+    private Pedido pegarLinhaSelecionada() {
+        pedSelecionado = null;
+        int linha = tblPedidos.getSelectedRow();
+        if (linha >= 0) {
+            pedSelecionado = (Pedido) tblPedidos.getValueAt(linha, 0);
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione um PEDIDO.");
+        }
+        return pedSelecionado;
+    }
+    
+    private void excluirLinhaSelecionada() {
+        int linha = tblPedidos.getSelectedRow();
+        if (linha >= 0) {
+            ((DefaultTableModel) tblPedidos.getModel()).removeRow(linha);
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnPesquisar;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblPedido;

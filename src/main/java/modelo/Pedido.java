@@ -1,9 +1,13 @@
  package modelo;
 
+import gerTarefas.FuncoesUteis;
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Vector;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -94,6 +98,22 @@ public class Pedido implements Serializable{
 
     public void setProduto(List<Produtos> produto) {
         this.produto = produto;
+    }
+
+    public Object[] toArray() throws ParseException {
+
+        // FORMATAR MOEDA
+        NumberFormat formNum = NumberFormat.getCurrencyInstance();
+
+        /*
+        // FORMATAR CASAS DECIMAIS 
+        DecimalFormat formNum = new DecimalFormat();
+        formNum.setMaximumFractionDigits(2);
+        formNum.setMinimumFractionDigits(2);
+         */
+        return new Object[]{this, cliente,
+            FuncoesUteis.dateToStr(getDataPedido()),
+            formNum.format(total)};
     }
     
     

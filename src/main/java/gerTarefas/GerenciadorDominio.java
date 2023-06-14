@@ -96,4 +96,13 @@ public class GerenciadorDominio {
         genDao.inserir(ped);
         return ped.getIdPedido();
     }
+
+    public List<Pedido> pesquisarPedido(String txtPesq) {
+        List<Pedido> lista = null;
+        lista = pedDao.pesquisarPorID(txtPesq);
+        return lista;
+    }
+    
+    
+    
 }
